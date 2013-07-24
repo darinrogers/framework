@@ -1,1 +1,4 @@
 yum -y install php
+
+.htacess or httpd.conf
+SetEnv APP_ENV prod
