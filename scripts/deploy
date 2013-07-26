@@ -1,5 +1,5 @@
-cd /var/www/html/framework/
-git archive --format=tar --prefix framework/ HEAD | gzip -9 > /tmp/framework.tar.gz
-scp /tmp/framework.tar.gz ec2-user@23.23.144.16:~
+cd /var/www/html/framework2/
+git archive --format=tar --prefix framework2/ HEAD | gzip -9 > /tmp/framework2.tar.gz
+scp /tmp/framework2.tar.gz ec2-user@23.23.144.16:~
 # untar
 # move to folder

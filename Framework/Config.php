@@ -190,4 +190,16 @@ class Config implements \ArrayAccess
         
         unset($config[$offset]);
     }
+    
+    /**
+     * Gets a config parameter
+     * 
+     * @param string $parameter Parameter name
+     * 
+     * @return \Framework\Config
+     */
+    public function get($parameter)
+    {
+        return $this[$parameter];
+    }
 }

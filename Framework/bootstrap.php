@@ -34,3 +34,5 @@ spl_autoload_register(
         }
     }
 );
+
+require __DIR__ . '/helpers.php';

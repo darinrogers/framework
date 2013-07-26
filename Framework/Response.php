@@ -66,7 +66,9 @@ class Response
         $viewContent = ob_get_contents();
         ob_clean();
         
-        include APP_DIR . '/layouts/default.php';
+        \Framework\Layout::getInstance()
+            ->set('viewContent', $viewContent)
+            ->render();
         
         $output = ob_get_contents();
         ob_end_clean();
