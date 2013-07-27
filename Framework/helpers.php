@@ -11,6 +11,8 @@
  * @link     https://github.com/darinrogers/framework
  */
 
+const RETURN_NO_ECHO = true;
+
 /**
  * Sets or gets page title
  * 
@@ -64,8 +66,45 @@ function metaTags()
  * 
  * @return null
  */
-function asset($relativeUrl)
+function asset($relativeUrl, $returnNoEcho = false)
 {
-    echo \Framework\Config::getInstance()->get('static-domain') . 
+    $md5 = md5((APP_DIR . $relativeUrl));
+    
+    $urlParts = explode('.', $relativeUrl);
+    
+    $numberOfParts = count($urlParts);
+    $urlParts[] = $urlParts[$numberOfParts - 1];
+    $urlParts[$numberOfParts - 1] = $md5;
+    
+    $relativeUrl = implode('.', $urlParts);
+    
+    $absoluteUrl = \Framework\Config::getInstance()->get('static-domain') . 
         $relativeUrl;
+    
+    if ($returnNoEcho) {
+        
+        return $absoluteUrl;
+    
+    } else {
+        
+        echo $absoluteUrl;
+    }
+}
+
+/**
+ * Writes out the javascript necessary to load a script asynchronously
+ * 
+ * @param string $absolutePath Absolute path to the script
+ * 
+ * @return string|null
+ */
+function asyncJs($absolutePath)
+{
+    echo '<script>' . 
+        'var node = document.createElement(\'script\');' . 
+        'node.type = \'text/javascript\';' . 
+        'node.async = true;' . 
+        'node.src = \'' . $absolutePath . '\';' . 
+        'var s = document.getElementsByTagName(\'script\')[0]; s.parentNode.insertBefore(node, s);' . 
+        '</script>';
 }
