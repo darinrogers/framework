@@ -33,8 +33,10 @@ abstract class Controller
      */
     public function getResponse()
     {
+        $qualifiedClassParts = explode('\\', get_called_class());
+        
         return new Response(
-            end(explode('\\', get_called_class())), 
+            end($qualifiedClassParts), 
             $this->_calledAction
         );
     }
