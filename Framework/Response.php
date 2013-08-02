@@ -26,16 +26,20 @@ namespace Framework;
  * @license  http://opensource.org/licenses/bsd-license.php New BSD License
  * @link     https://github.com/darinrogers/framework
  */
-class Response
+class Response implements \ArrayAccess
 {
     /**
-     * @var unknown
+     * @var string
      */
     private $_controllerName = '';
     /**
-     * @var unknown
+     * @var string
      */
     private $_actionName = '';
+    /**
+     * @var array
+     */
+    private $_variables = array();
     
     /**
      * Constructor
@@ -58,6 +62,10 @@ class Response
      */
     public function __toString()
     {
+        foreach ($this->_variables as $name =>  $value) {
+            $$name = $value;
+        }
+        
         ob_start();
         
         include APP_DIR . '/views/' . $this->_controllerName . '/' . 
@@ -74,5 +82,71 @@ class Response
         ob_end_clean();
         
         return $output;
+    }
+    
+    /** 
+     * Tells whether an offset exists
+     * 
+     * @param mixed $offset The offset to check for
+     * 
+     * @return bool
+     * 
+     * @see ArrayAccess::offsetExists()
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->_variables[$offset]);
+    }
+    
+    /** 
+     * Gets an offset
+     * 
+     * @param mixed $offset The offset to get
+     * 
+     * @return mixed
+     * 
+     * @see ArrayAccess::offsetGet()
+     */
+    public function offsetGet($offset)
+    {
+        return isset($this->_variables[$offset])
+            ? $this->_variables[$offset]
+            : null;
+    }
+    
+    /** 
+     * Sets an offset
+     * 
+     * @param mixed $offset The offset to set
+     * @param mixed $value  The value to set the offset to
+     * 
+     * @return null
+     * 
+     * @see ArrayAccess::offsetSet()
+     */
+    public function offsetSet($offset, $value)
+    {
+        if (is_null($offset)) {
+            
+            $this->_variables[] = $value;
+        
+        } else {
+            
+            $this->_variables[$offset] = $value;
+        }
+    }
+    
+    /** 
+     * Unsets an offset
+     * 
+     * @param mixed $offset The offset to unset
+     * 
+     * @return null
+     * 
+     * @see ArrayAccess::offsetUnset()
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->_variables[$offset]);
     }
 }

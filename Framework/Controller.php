@@ -25,6 +25,10 @@ namespace Framework;
 abstract class Controller
 {
     private $_calledAction = '';
+    /**
+     * @var \Framework\Response
+     */
+    private $_response = null;
     
     /**
      * Gets the response object
@@ -33,12 +37,17 @@ abstract class Controller
      */
     public function getResponse()
     {
-        $qualifiedClassParts = explode('\\', get_called_class());
+        if ($this->_response === null) {
+            
+            $qualifiedClassParts = explode('\\', get_called_class());
+            
+            $this->_response = new Response(
+                end($qualifiedClassParts), 
+                $this->_calledAction
+            );
+        }
         
-        return new Response(
-            end($qualifiedClassParts), 
-            $this->_calledAction
-        );
+        return $this->_response;
     }
     
     /**

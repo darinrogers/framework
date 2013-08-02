@@ -15,7 +15,9 @@
 /**
  * @var unknown
  */
-define('FRAMEWORK_DIR', realpath(__DIR__ . '/../'));
+if (!defined('FRAMEWORK_DIR')) {
+    define('FRAMEWORK_DIR', realpath(__DIR__ . '/../'));
+}
 
 spl_autoload_register(
     /**
