@@ -29,6 +29,46 @@ abstract class Controller
      * @var \Framework\Response
      */
     private $_response = null;
+    private $_post = null;
+    
+    /**
+     * Lazily loads the POST parameters, defaulting to $_POST
+     * 
+     * @return Ambigous <unknown, array>
+     */
+    private function _getPost()
+    {
+        if ($this->_post === null) {
+            $this->_post = $_POST;
+        }
+        
+        return $this->_post;
+    }
+    
+    /**
+     * Gets a POST parameter
+     * 
+     * @param string $parameterName Parameter name
+     * 
+     * @return Ambigous <>
+     */
+    protected function getPost($parameterName)
+    {
+        $post = $this->_getPost();
+        return $post[$parameterName];
+    }
+    
+    /**
+     * Sets the POST parameters
+     * 
+     * @param array $post The POST
+     * 
+     * @return null
+     */
+    protected function setPost(array $post)
+    {
+        $this->_post = $post;
+    }
     
     /**
      * Gets the response object

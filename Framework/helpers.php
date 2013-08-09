@@ -62,9 +62,10 @@ function metaTags()
 /**
  * Echoes an asset absolute path
  * 
- * @param string $relativeUrl Relative URL
+ * @param string $relativeUrl  Relative URL
+ * @param bool   $returnNoEcho Returns the string instead of echoing
  * 
- * @return null
+ * @return null|string
  */
 function asset($relativeUrl, $returnNoEcho = false)
 {
@@ -105,6 +106,7 @@ function asyncJs($absolutePath)
         'node.type = \'text/javascript\';' . 
         'node.async = true;' . 
         'node.src = \'' . $absolutePath . '\';' . 
-        'var s = document.getElementsByTagName(\'script\')[0]; s.parentNode.insertBefore(node, s);' . 
+        'var s = document.getElementsByTagName(\'script\')[0]; ' . 
+        's.parentNode.insertBefore(node, s);' . 
         '</script>';
 }

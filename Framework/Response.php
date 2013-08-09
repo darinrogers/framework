@@ -41,6 +41,8 @@ class Response implements \ArrayAccess
      */
     private $_variables = array();
     
+    private $_isViewEnabled = true;
+    
     /**
      * Constructor
      * 
@@ -68,11 +70,16 @@ class Response implements \ArrayAccess
         
         ob_start();
         
-        include APP_DIR . '/views/' . $this->_controllerName . '/' . 
-            $this->_actionName . '.php';
+        $viewContent = '';
         
-        $viewContent = ob_get_contents();
-        ob_clean();
+        if ($this->_isViewEnabled) {
+            
+            include APP_DIR . '/views/' . $this->_controllerName . '/' . 
+                $this->_actionName . '.php';
+            
+            $viewContent = ob_get_contents();
+            ob_clean();
+        }
         
         \Framework\Layout::getInstance()
             ->set('viewContent', $viewContent)
@@ -82,6 +89,16 @@ class Response implements \ArrayAccess
         ob_end_clean();
         
         return $output;
+    }
+    
+    /**
+     * Disables view rendering
+     * 
+     *  @return null
+     */
+    public function disableView()
+    {
+        $this->_isViewEnabled = false;
     }
     
     /** 
