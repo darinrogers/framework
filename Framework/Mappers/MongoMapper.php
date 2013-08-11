@@ -58,7 +58,7 @@ abstract class MongoMapper
         
         } catch (\MongoConnectionException $e) {
             
-            throw new \Mappers\DbConnectionException(
+            throw new DbConnectionException(
                 'Couldn\'t connect to the database.', 
                 $e->getCode(), 
                 $e
