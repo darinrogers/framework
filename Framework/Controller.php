@@ -67,7 +67,9 @@ abstract class Controller
     protected function getPost($parameterName)
     {
         $post = $this->_getPost();
-        return $post[$parameterName];
+        return (isset($post[$parameterName]))
+            ? $post[$parameterName]
+            : '';
     }
     
     /**
@@ -110,9 +112,24 @@ abstract class Controller
         return $_SESSION['csrfToken'];
     }
     
+    /**
+     * Validates a CSRF token
+     * 
+     * @param string $csrfToken CSRF token
+     * 
+     * @return null
+     * 
+     * @throws \Framework\SecurityException
+     */
     protected function validateCsrfToken($csrfToken)
     {
-        
+        if ($csrfToken !== $this->getCsrfToken()) {
+            
+            throw new \Framework\SecurityException(
+                'There was a security error.', 
+                'CSRF exception: ' . $csrfToken . ' didn\'t match expected.'
+            );
+        }
     }
     
     /**

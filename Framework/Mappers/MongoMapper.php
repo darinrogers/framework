@@ -108,7 +108,7 @@ abstract class MongoMapper
      */
     public function create(\Framework\Models\Model $model)
     {
-        $this->getCollection()->insert($model->getDeltaData());
+        $this->getCollection()->insert($model->getDeltaDataset());
     }
     
     /**

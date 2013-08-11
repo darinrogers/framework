@@ -41,7 +41,7 @@ class Exception extends \Exception
      * 
      * @return null
      */
-    public function __construct($privateMessage, $publicMessage)
+    public function __construct($publicMessage, $privateMessage)
     {
         $this->_privateMessage = $privateMessage;
         

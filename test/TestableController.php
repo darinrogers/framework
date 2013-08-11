@@ -8,4 +8,9 @@ class TestableController extends \Framework\Controller
 	{
 		
 	}
+	
+	public function validateCsrfToken($csrfToken)
+	{
+	    parent::validateCsrfToken($csrfToken);
+	}
 }

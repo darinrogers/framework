@@ -1,5 +1,6 @@
 <?php
 
+use Framework\Test\TestableController;
 require_once __DIR__ . '/test_bootstrap.php';
 require_once __DIR__ . '/TestableController.php';
 
@@ -23,5 +24,32 @@ class ControllerTest extends PHPUnit_Framework_TestCase
 			'layout : some-view', 
 			$c->getResponse()->__toString()
 		);
+	}
+	
+	/**
+	 * @expectedException \Framework\SecurityException
+	 */
+	public function testThrowsExceptionWhenInvalidCsrfToken()
+	{
+	    $c = $this->getMock('\\Framework\Test\\TestableController', array('getCsrfToken'));
+	    $c->expects($this->once())
+	       ->method('getCsrfToken')
+	       ->will(
+	           $this->returnValue('bcd234')
+	       );
+	    
+	    $c->validateCsrfToken('abc123');
+	}
+	
+	public function testNoExceptionWhenValidCsrfToken()
+	{
+	    $c = $this->getMock('\\Framework\Test\\TestableController', array('getCsrfToken'));
+	    $c->expects($this->once())
+	       ->method('getCsrfToken')
+	       ->will(
+	           $this->returnValue('bcd234')
+	       );
+	    
+	    $c->validateCsrfToken('bcd234');
 	}
 }

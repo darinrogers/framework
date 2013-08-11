@@ -42,6 +42,7 @@ class Response implements \ArrayAccess
     private $_variables = array();
     
     private $_isViewEnabled = true;
+    private $_isLayoutEnabled = true;
     
     /**
      * Constructor
@@ -81,9 +82,12 @@ class Response implements \ArrayAccess
             ob_clean();
         }
         
-        \Framework\Layout::getInstance()
-            ->set('viewContent', $viewContent)
-            ->render();
+        if ($this->_isLayoutEnabled) {
+            
+            \Framework\Layout::getInstance()
+                ->set('viewContent', $viewContent)
+                ->render();
+        }
         
         $output = ob_get_contents();
         ob_end_clean();
@@ -99,6 +103,7 @@ class Response implements \ArrayAccess
     public function disableView()
     {
         $this->_isViewEnabled = false;
+        $this->_isLayoutEnabled = false;
     }
     
     /** 

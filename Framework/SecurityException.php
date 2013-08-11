@@ -28,17 +28,5 @@ namespace Framework;
  */
 class SecurityException extends \Framework\Exception
 {
-    /**
-     * Constructory
-     * 
-     * @param string $publicMessage  Message displayed to end-user
-     * @param string $privateMessage Message logged
-     * 
-     * @return null
-     */
-    public function __construct($publicMessage, $privateMessage)
-    {
-        error_log($privateMessage);
-        parent::__construct($publicMessage);
-    }
+    
 }
