@@ -1,6 +1,6 @@
 <?php
 /**
- * Exception class
+ * SecurityException class
  *
  * PHP version 5.3
  * 
@@ -18,7 +18,7 @@
 namespace Framework;
 
 /**
- * Exception class
+ * SecurityException class
  * 
  * @category Framework
  * @package  Framework
@@ -26,35 +26,19 @@ namespace Framework;
  * @license  http://opensource.org/licenses/bsd-license.php New BSD License
  * @link     https://github.com/darinrogers/framework
  */
-class Exception extends \Exception
+class SecurityException extends \Framework\Exception
 {
     /**
-     * @var string
-     */
-    private $_privateMessage = '';
-    
-    /**
-     * Constructor
+     * Constructory
      * 
-     * @param string $privateMessage Private message, typically used for logging
-     * @param string $publicMessage  Public message, used to show to the user
+     * @param string $publicMessage  Message displayed to end-user
+     * @param string $privateMessage Message logged
      * 
      * @return null
      */
-    public function __construct($privateMessage, $publicMessage)
+    public function __construct($publicMessage, $privateMessage)
     {
-        $this->_privateMessage = $privateMessage;
-        
+        error_log($privateMessage);
         parent::__construct($publicMessage);
-    }
-    
-    /**
-     * Gets the private message
-     * 
-     * @return string
-     */
-    public function getPrivateMessage()
-    {
-        return $this->_privateMessage;
     }
 }

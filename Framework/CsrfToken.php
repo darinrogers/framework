@@ -1,6 +1,6 @@
 <?php
 /**
- * Exception class
+ * CsrfToken class
  *
  * PHP version 5.3
  * 
@@ -18,7 +18,7 @@
 namespace Framework;
 
 /**
- * Exception class
+ * CsrfToken class
  * 
  * @category Framework
  * @package  Framework
@@ -26,35 +26,30 @@ namespace Framework;
  * @license  http://opensource.org/licenses/bsd-license.php New BSD License
  * @link     https://github.com/darinrogers/framework
  */
-class Exception extends \Exception
+class CsrfToken
 {
     /**
      * @var string
      */
-    private $_privateMessage = '';
+    private $_string = '';
     
     /**
      * Constructor
      * 
-     * @param string $privateMessage Private message, typically used for logging
-     * @param string $publicMessage  Public message, used to show to the user
-     * 
      * @return null
      */
-    public function __construct($privateMessage, $publicMessage)
+    public function __construct()
     {
-        $this->_privateMessage = $privateMessage;
-        
-        parent::__construct($publicMessage);
+        $this->_string = md5(microtime());
     }
     
     /**
-     * Gets the private message
+     * Magic method for casting to a string
      * 
      * @return string
      */
-    public function getPrivateMessage()
+    public function __toString()
     {
-        return $this->_privateMessage;
+        return $this->_string;
     }
 }

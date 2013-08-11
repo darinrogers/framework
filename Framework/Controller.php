@@ -46,6 +46,18 @@ abstract class Controller
     }
     
     /**
+     * Starts a session only if one isn't already started
+     * 
+     * @return null
+     */
+    private function _startSession()
+    {
+        if (session_id() === '') {
+            session_start();
+        }
+    }
+    
+    /**
      * Gets a POST parameter
      * 
      * @param string $parameterName Parameter name
@@ -68,6 +80,39 @@ abstract class Controller
     protected function setPost(array $post)
     {
         $this->_post = $post;
+    }
+    
+    /**
+     * Called before calling ...Action
+     * 
+     * @return null
+     */
+    protected function onBeforeDispatch()
+    {
+        // no op
+    }
+    
+    /**
+     * Gets a CSRF token. Starts a session if one isn't already started. 
+     * 
+     *  @return string
+     */
+    protected function getCsrfToken()
+    {
+        $this->_startSession();
+        
+        if (!isset($_SESSION['csrfToken'])) {
+        
+            $csrfToken = new \Framework\CsrfToken();
+            $_SESSION['csrfToken'] = (string)$csrfToken;
+        }
+        
+        return $_SESSION['csrfToken'];
+    }
+    
+    protected function validateCsrfToken($csrfToken)
+    {
+        
     }
     
     /**
@@ -100,6 +145,8 @@ abstract class Controller
     public function runAction($actionName)
     {
         $this->_calledAction = $actionName;
+        
+        $this->onBeforeDispatch();
         
         call_user_func(array($this, $actionName . 'Action'));
     }
