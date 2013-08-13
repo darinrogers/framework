@@ -36,12 +36,12 @@ class Exception extends \Exception
     /**
      * Constructor
      * 
-     * @param string $privateMessage Private message, typically used for logging
-     * @param string $publicMessage  Public message, used to show to the user
+     * @param string $publicMessage  Private message, typically used for logging
+     * @param string $privateMessage Public message, used to show to the user
      * 
      * @return null
      */
-    public function __construct($publicMessage, $privateMessage)
+    public function __construct($publicMessage, $privateMessage = '')
     {
         $this->_privateMessage = $privateMessage;
         

@@ -75,8 +75,14 @@ class Response implements \ArrayAccess
         
         if ($this->_isViewEnabled) {
             
-            include APP_DIR . '/views/' . $this->_controllerName . '/' . 
+            $viewFileName = APP_DIR . '/views/' . $this->_controllerName . '/' . 
                 $this->_actionName . '.php';
+            
+            if (!file_exists($viewFileName)) {
+                die('View file missing: ' . $viewFileName);
+            }
+            
+            include $viewFileName;
             
             $viewContent = ob_get_contents();
             ob_clean();

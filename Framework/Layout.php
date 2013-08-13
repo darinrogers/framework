@@ -87,7 +87,9 @@ class Layout
      */
     public function get($name)
     {
-        return $this->_variables[$name];
+        return (isset($this->_variables[$name]))
+            ? $this->_variables[$name]
+            : '';
     }
     
     /** 

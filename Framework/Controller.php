@@ -73,6 +73,33 @@ abstract class Controller
     }
     
     /**
+     * Pops a basic authentication dialog
+     * 
+     * @param string $realm    Authentication realm
+     * @param string $username Username
+     * @param string $password Password
+     * 
+     * @return null
+     */
+    protected function requireBasicAuth($realm, $username, $password)
+    {
+        $enteredUser = (isset($_SERVER['PHP_AUTH_USER'])) 
+            ? $_SERVER['PHP_AUTH_USER']
+            : '';
+        $enteredPass = (isset($_SERVER['PHP_AUTH_PW']))
+            ? $_SERVER['PHP_AUTH_PW']
+            : '';
+        
+        if ($enteredUser != $username || $enteredPass != $password) {
+            
+            header('WWW-Authenticate: Basic realm="' . $realm . '"');
+            header('HTTP/1.0 401 Unauthorized');
+            echo 'You must authenticate!';
+            exit;
+        } 
+    }
+    
+    /**
      * Sets the POST parameters
      * 
      * @param array $post The POST

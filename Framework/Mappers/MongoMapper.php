@@ -100,6 +100,15 @@ abstract class MongoMapper
     abstract protected function getHostName();
     
     /**
+     * Returns an instance of the Model for this mapper
+     * 
+     * @param array $dataset The Dataset to instantiate with
+     * 
+     * @return null
+     */
+    abstract protected function getInstance(array $dataset);
+    
+    /**
      * Creates
      * 
      * @param \Models\Model $model The model
@@ -133,6 +142,23 @@ abstract class MongoMapper
     public function readOne(array $criteria)
     {
         return $this->getCollection()->findOne($criteria);
+    }
+    
+    /**
+     * Reads all objects from the collection
+     * 
+     * @return multitype:NULL 
+     */
+    public function readAll()
+    {
+        $allData = $this->getCollection()->find();
+        $allObjects = array();
+        
+        foreach ($allData as $datum) {
+            $allObjects[] = $this->getInstance($datum);
+        }
+        
+        return $allObjects; 
     }
     
     /**
