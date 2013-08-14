@@ -2,4 +2,3 @@ tar -xvf ~/framework2.tar.gz
 sudo rm -rf /var/www/html/framework2.old
 sudo mv /var/www/html/framework2 /var/www/html/framework2.old
 sudo mv ~/framework2 /var/www/html/framework2
-# cleanup

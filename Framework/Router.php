@@ -48,7 +48,7 @@ class Router
     public function __construct($requestUri)
     {
         $requestParts = explode('/', substr($requestUri, 1));
-
+        
         if ($requestParts[0] != '') {
             
             $this->_controllerName = str_replace(
@@ -68,7 +68,8 @@ class Router
             $this->_controllerName = 'Index';
         }
         
-        if (isset($requestParts[1])) {
+        // index 1 would be set to empty after rewriting with trailing slash
+        if (isset($requestParts[1]) && $requestParts[1] !== '') {
             
             $this->_actionName = lcfirst(
                 str_replace(
