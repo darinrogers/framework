@@ -26,6 +26,12 @@ AddOutputFilterByType DEFLATE application/rss+xml
 AddOutputFilterByType DEFLATE application/javascript
 AddOutputFilterByType DEFLATE application/x-javascript
 
+<IfModule mod_headers.c>
+    Header unset ETag
+</IfModule>
+
+FileETag None
+
 KeepAlive On
 
 ExpiresActive on

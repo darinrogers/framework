@@ -50,7 +50,7 @@ class Config implements \ArrayAccess
                     $this->_config = $data;
                     break;
                 
-                } elseif (strpos($section, $environment . ':') === 0) {
+                } elseif (strstr($section, $environment . ':') !== false) {
                     
                     $hierarchy = explode(':', $section);
                     
