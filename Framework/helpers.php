@@ -69,15 +69,18 @@ function metaTags()
  */
 function asset($relativeUrl, $returnNoEcho = false)
 {
-    $md5 = 'v_' . md5((APP_DIR . $relativeUrl));
+    $md5 = md5((APP_DIR . $relativeUrl));
     
     $urlParts = explode('.', $relativeUrl);
     
     $numberOfParts = count($urlParts);
     $urlParts[] = $urlParts[$numberOfParts - 1];
-    $urlParts[$numberOfParts - 1] = $md5;
+    $urlParts[$numberOfParts - 1] = 'v_' . $md5;
     
-    $relativeUrl = implode('.', $urlParts);
+    $firstPart = implode('.', array_slice($urlParts, 0, count($urlParts) - 2));
+    $secondPart = implode('.', array_slice($urlParts, count($urlParts) - 2, 2));
+    
+    $relativeUrl = implode('-', array($firstPart, $secondPart));
     
     $absoluteUrl = \Framework\Config::getInstance()->get('static-domain') . 
         $relativeUrl;
