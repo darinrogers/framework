@@ -92,6 +92,8 @@ class Response implements \ArrayAccess
             
             \Framework\Layout::getInstance()
                 ->set('viewContent', $viewContent)
+                ->set('controllerName', $this->_controllerName)
+                ->set('actionName', $this->_actionName)
                 ->render();
         }
         
