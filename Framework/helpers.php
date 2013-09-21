@@ -69,7 +69,7 @@ function metaTags()
  */
 function asset($relativeUrl, $returnNoEcho = false)
 {
-    $md5 = md5((APP_DIR . $relativeUrl));
+    $md5 = md5_file(((APP_DIR . '/public/' . $relativeUrl)));
     
     $urlParts = explode('.', $relativeUrl);
     
