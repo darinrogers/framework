@@ -83,3 +83,7 @@ ExpiresByType application/vnd.ms-fontobject         "access plus 1 month"
 ExpiresByType application/x-font-ttf                "access plus 1 month"
 ExpiresByType font/opentype                         "access plus 1 month"
 ExpiresByType image/svg+xml                         "access plus 1 month"
+
+<FilesMatch "\.(png)$">
+  Header append Cache-Control "public"
+</FilesMatch>
