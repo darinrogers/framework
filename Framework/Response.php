@@ -43,6 +43,74 @@ class Response implements \ArrayAccess
     
     private $_isViewEnabled = true;
     private $_isLayoutEnabled = true;
+    private $_headers = array();
+    
+    /**
+     * Gets all the variables set
+     * 
+     * @return array
+     */
+    protected function getVariables()
+    {
+        return $this->_variables;
+    }
+    
+    /**
+     * Returns the response as a string
+     * 
+     * @return string
+     */
+    protected function getResponseAsString()
+    {
+        foreach ($this->_variables as $name =>  $value) {
+            $$name = $value;
+        }
+        
+        ob_start();
+        
+        $viewContent = '';
+        
+        if ($this->_isViewEnabled) {
+        
+            $viewFileName = APP_DIR . '/views/' . $this->_controllerName . '/' .
+                    $this->_actionName . '.php';
+        
+            if (!file_exists($viewFileName)) {
+                die('View file missing: ' . $viewFileName);
+            }
+        
+            include $viewFileName;
+        
+            $viewContent = ob_get_contents();
+            ob_clean();
+        
+            $scriptFileName = APP_DIR . '/views/' . $this->_controllerName . '/' .
+                    $this->_actionName . '.script.php';
+            $scriptContent = '';
+        
+            if (file_exists($scriptFileName)) {
+                 
+                include $scriptFileName;
+                $scriptContent = ob_get_contents();
+                ob_clean();
+            }
+        }
+        
+        if ($this->_isLayoutEnabled) {
+        
+            \Framework\Layout::getInstance()
+            ->set('viewContent', $viewContent)
+            ->set('controllerName', $this->_controllerName)
+            ->set('actionName', $this->_actionName)
+            ->set('scriptContent', $scriptContent)
+            ->render();
+        }
+        
+        $output = ob_get_contents();
+        ob_end_clean();
+        
+        return $output;
+    }
     
     /**
      * Constructor
@@ -59,48 +127,41 @@ class Response implements \ArrayAccess
     }
     
     /**
+     * Adds a header to the response
+     * 
+     * @param string $header The header
+     * 
+     * @return null
+     */
+    public function addHeader($header)
+    {
+        $this->_headers[] = $header;
+    }
+    
+    /**
+     * Sets the HTTP response status code
+     * 
+     * @param int $code Status code
+     * 
+     * @return null
+     */
+    public function setStatusCode($code)
+    {
+        header('Status: ' . $code, true, $code);
+    }
+    
+    /**
      * Converts this response object to a string
      * 
      * @return string
      */
     public function __toString()
     {
-        foreach ($this->_variables as $name =>  $value) {
-            $$name = $value;
+        foreach ($this->_headers as $header) {
+            header($header);
         }
         
-        ob_start();
-        
-        $viewContent = '';
-        
-        if ($this->_isViewEnabled) {
-            
-            $viewFileName = APP_DIR . '/views/' . $this->_controllerName . '/' . 
-                $this->_actionName . '.php';
-            
-            if (!file_exists($viewFileName)) {
-                die('View file missing: ' . $viewFileName);
-            }
-            
-            include $viewFileName;
-            
-            $viewContent = ob_get_contents();
-            ob_clean();
-        }
-        
-        if ($this->_isLayoutEnabled) {
-            
-            \Framework\Layout::getInstance()
-                ->set('viewContent', $viewContent)
-                ->set('controllerName', $this->_controllerName)
-                ->set('actionName', $this->_actionName)
-                ->render();
-        }
-        
-        $output = ob_get_contents();
-        ob_end_clean();
-        
-        return $output;
+        return $this->getResponseAsString();
     }
     
     /**

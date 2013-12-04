@@ -41,6 +41,8 @@ class Layout
      */
     private $_variables = array();
     
+    private $_name = 'default';
+    
     /**
      * Constructor
      * 
@@ -113,7 +115,7 @@ class Layout
             $$name = $value;
         }
         
-        include APP_DIR . '/layouts/default.php';
+        include APP_DIR . '/layouts/' . $this->_name . '.php';
     }
     
     /**
@@ -128,5 +130,17 @@ class Layout
     {
         $this->_variables[$name] = $value;
         return $this;
+    }
+    
+    /**
+     * Sets the name of the layout file
+     * 
+     * @param string $name The name
+     * 
+     * @return null
+     */
+    public function setName($name)
+    {
+        $this->_name = $name;
     }
 }

@@ -160,6 +160,28 @@ abstract class Controller
     }
     
     /**
+     * Sets the name of the layout file, e.g. default
+     * 
+     * @param string $layoutName The layout name
+     * 
+     * @return null
+     */
+    protected function setLayoutName($layoutName)
+    {
+        \Framework\Layout::getInstance()->setName($layoutName);
+    }
+    
+    /**
+     * Gets the response class name, defaulting to Reponse
+     * 
+     * @return string
+     */
+    protected function getResponseClassName()
+    {
+        return 'Response';
+    }
+    
+    /**
      * Gets the response object
      * 
      * @return \Framework\Response
@@ -169,8 +191,9 @@ abstract class Controller
         if ($this->_response === null) {
             
             $qualifiedClassParts = explode('\\', get_called_class());
+            $responseClassName = '\\Framework\\' . $this->getResponseClassName();
             
-            $this->_response = new Response(
+            $this->_response = new $responseClassName(
                 end($qualifiedClassParts), 
                 $this->_calledAction
             );
