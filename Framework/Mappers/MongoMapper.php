@@ -31,6 +31,7 @@ abstract class MongoMapper
     const UPSERT = true;
     
     private $_collection = null;
+    private $_database = null;
     
     /**
      * Gets the collection. 
@@ -49,10 +50,10 @@ abstract class MongoMapper
             
             $client 
                 = new \MongoClient('mongodb://' . $this->getHostname() . ':27017');
-            $database = $client->selectDB($this->getDbName());
+            $this->_database = $client->selectDB($this->getDbName());
             
             $this->_collection 
-                = $database->selectCollection($this->getCollectionName());
+                = $this->_database->selectCollection($this->getCollectionName());
             
             return $this->_collection;
         
@@ -64,6 +65,11 @@ abstract class MongoMapper
                 $e
             );
         }
+    }
+    
+    protected function getDb()
+    {
+    	return $this->_database;
     }
     
     /**
@@ -118,6 +124,34 @@ abstract class MongoMapper
     public function create(\Framework\Models\Model $model)
     {
         $this->getCollection()->insert($model->getDeltaDataset());
+    }
+    
+    public function batchInsert(array $models, array $options = array())
+    {
+    	$modelArrays = array();
+    	$deltaData = array();
+    	
+    	/* @var $model \Framework\Models\Model */
+    	foreach ($models as $model) {
+    		
+    		$deltaData = $model->getDeltaDataset();
+    		
+    		if (count($deltaData) == 0) {
+    			continue;
+    		}
+    		
+    		$modelArrays[] = $deltaData;
+    	}
+    	
+    	// TODO hacky workaround for batch insert not continuing on error
+    	//$this->getCollection()->batchInsert($modelArrays, $options);
+    	foreach ($modelArrays as $modelArray) {
+    		try {
+    			$this->getCollection()->insert($modelArray, $options);
+    		} catch (\Exception $e) {
+    			//...
+    		}
+    	}
     }
     
     /**
