@@ -6,6 +6,7 @@ abstract class Api
 {
 	private static $_curlMulti = null;
 	private static $_queuedHandles = array();
+	private static $_sharedCurl = null;
 	
 	private static function _getCurlMulti()
 	{
@@ -16,20 +17,24 @@ abstract class Api
 		return self::$_curlMulti;
 	}
 	
-	private function _initCurl($url)
+	private function _initCurl()
 	{
-		$curl = curl_init();
-		curl_setopt($curl, CURLOPT_URL, $url);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($curl, CURLOPT_HEADER, false);
-		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
+		if (self::$_sharedCurl === null) {
+			
+			self::$_sharedCurl = curl_init();
+			curl_setopt(self::$_sharedCurl, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt(self::$_sharedCurl, CURLOPT_HEADER, false);
+			curl_setopt(self::$_sharedCurl, CURLOPT_SSL_VERIFYPEER, true);
+		}
 		
-		return $curl;
+		return self::$_sharedCurl;
 	}
 	
 	protected function curl($url)
 	{
-		$curl = $this->_initCurl($url);
+		// serial requests can reuse the handle
+		$curl = $this->_initCurl();
+		curl_setopt($curl, CURLOPT_URL, $url);
 		$response = curl_exec($curl);
 		
 		if ($response === false) {
@@ -37,14 +42,19 @@ abstract class Api
 			throw new CurlException(curl_error($curl), curl_errno($curl));
 		}
 		
-		curl_close($curl);
+		// not calling curl_close so we can reuse the handle
 		
 		return $response;
 	}
 	
 	protected function queueCurl($url, $handleId)
 	{
-		$curl = $this->_initCurl($url);
+		// each request in the queue gets its own resource
+		$curl = curl_init();
+		curl_setopt($curl, CURLOPT_URL, $url);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_HEADER, false);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
 		
 		curl_multi_add_handle(
 			self::_getCurlMulti(), 
