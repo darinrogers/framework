@@ -133,9 +133,13 @@ abstract class MongoMapper
      * 
      * @return null
      */
-    public function create(\Framework\Models\Model $model)
+    public function create(\Framework\Models\Model &$model)
     {
-        $this->getCollection()->insert($model->getDeltaDataset());
+        $deltaData = $model->getDeltaDataset();
+    	
+    	$this->getCollection()->insert($deltaData);
+    	
+    	$model = $this->getInstance($deltaData);
     }
     
     public function batchInsert(array $models, array $options = array())
