@@ -47,7 +47,10 @@ class Router
      */
     public function __construct($requestUri)
     {
-        $requestParts = explode('/', substr($requestUri, 1));
+        $requestWithQuerystring = explode('?', $requestUri);
+        $requestUri = $requestWithQuerystring[0];
+    	
+    	$requestParts = explode('/', substr($requestUri, 1));
         
         if ($requestParts[0] != '') {
             

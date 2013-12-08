@@ -128,8 +128,6 @@ abstract class Controller
      */
     protected function getCsrfToken()
     {
-        $this->_startSession();
-        
         if (!isset($_SESSION['csrfToken'])) {
         
             $csrfToken = new \Framework\CsrfToken();
@@ -179,6 +177,11 @@ abstract class Controller
     protected function getResponseClassName()
     {
         return 'Response';
+    }
+    
+    public function __construct()
+    {
+    	$this->_startSession();
     }
     
     /**

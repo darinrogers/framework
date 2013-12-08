@@ -30,11 +30,16 @@ abstract class Api
 		return self::$_sharedCurl;
 	}
 	
-	protected function curl($url)
+	protected function curl($url, array $options = array())
 	{
 		// serial requests can reuse the handle
 		$curl = $this->_initCurl();
 		curl_setopt($curl, CURLOPT_URL, $url);
+		
+		foreach ($options as $option => $value) {
+			curl_setopt($curl, $option, $value);
+		}
+		
 		$response = curl_exec($curl);
 		
 		if ($response === false) {

@@ -27,4 +27,12 @@ class RouterTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals('Index', $r->getControllerName());
 		$this->assertEquals('index', $r->getActionName());
 	}
+	
+	public function testStripsQuerystringWhenParsingControllerAndActionNames()
+	{
+		$r = new \Framework\Router('/login?username=darin&password=password');
+		
+		$this->assertEquals('Login', $r->getControllerName());
+		$this->assertEquals('index', $r->getActionName());
+	}
 }
