@@ -47,6 +47,12 @@ abstract class Api
 			throw new CurlException(curl_error($curl), curl_errno($curl));
 		}
 		
+		$responseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+		if ($responseCode != 200) {
+			
+			throw new CurlException('Bad response code: ' . $responseCode);
+		}
+		
 		// not calling curl_close so we can reuse the handle
 		
 		return $response;
