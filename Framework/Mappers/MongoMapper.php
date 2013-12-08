@@ -48,19 +48,14 @@ abstract class MongoMapper
         
         try {
             
-            $client 
-                = new \MongoClient('mongodb://' . $this->getHostname() . ':27017');
-            $this->_database = $client->selectDB($this->getDbName());
-            
-            $this->_collection 
-                = $this->_database->selectCollection($this->getCollectionName());
+            $this->_collection = $this->getDb()->selectCollection($this->getCollectionName());
             
             return $this->_collection;
         
-        } catch (\MongoConnectionException $e) {
+        } catch (\Exception $e) {
             
             throw new DbConnectionException(
-                'Couldn\'t connect to the database.', 
+                'Couldn\'t select the database collection.', 
                 $e->getCode(), 
                 $e
             );
@@ -69,6 +64,23 @@ abstract class MongoMapper
     
     protected function getDb()
     {
+    	if ($this->_database == null) {
+    		
+    		try {
+    		
+    			$client = new \MongoClient('mongodb://' . $this->getHostname() . ':27017');
+    			$this->_database = $client->selectDB($this->getDbName());
+    			
+    		} catch (\MongoConnectionException $e) {
+    			
+    			throw new DbConnectionException(
+    				'Couldn\'t connect to the database.',
+    				$e->getCode(),
+    				$e
+    			);
+    		}
+    	}
+    	
     	return $this->_database;
     }
     
