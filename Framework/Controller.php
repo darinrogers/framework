@@ -179,6 +179,12 @@ abstract class Controller
         return 'Response';
     }
     
+    protected function getCalledControllerName()
+    {
+    	$qualifiedClassParts = explode('\\', get_called_class());
+    	return end($qualifiedClassParts);
+    }
+    
     public function __construct()
     {
     	$this->_startSession();
@@ -193,11 +199,10 @@ abstract class Controller
     {
         if ($this->_response === null) {
             
-            $qualifiedClassParts = explode('\\', get_called_class());
             $responseClassName = '\\Framework\\' . $this->getResponseClassName();
             
             $this->_response = new $responseClassName(
-                end($qualifiedClassParts), 
+                $this->getCalledControllerName(), 
                 $this->_calledAction
             );
         }

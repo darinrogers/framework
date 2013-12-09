@@ -51,8 +51,16 @@ class Router
         $requestUri = $requestWithQuerystring[0];
     	
     	$requestParts = explode('/', substr($requestUri, 1));
+    	
+    	$isAdmin = false;
+    	
+    	if ($requestParts[0] == 'admin') {
+    		
+    		$isAdmin = true;
+    		array_shift($requestParts);
+    	}
         
-        if ($requestParts[0] != '') {
+        if (isset($requestParts[0]) && $requestParts[0] != '') {
             
             $this->_controllerName = str_replace(
                 ' ', 
@@ -69,6 +77,10 @@ class Router
         } else {
             
             $this->_controllerName = 'Index';
+        }
+        
+        if ($isAdmin) {
+        	$this->_controllerName = 'Admin\\' . $this->_controllerName;
         }
         
         // index 1 would be set to empty after rewriting with trailing slash

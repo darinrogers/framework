@@ -35,4 +35,28 @@ class RouterTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals('Login', $r->getControllerName());
 		$this->assertEquals('index', $r->getActionName());
 	}
+	
+	public function testParsesAdminIndex()
+	{
+		$r = new \Framework\Router('/admin');
+		
+		$this->assertEquals('Admin\Index', $r->getControllerName());
+		$this->assertEquals('index', $r->getActionName());
+	}
+	
+	public function testParsesAdminSubsectionIndex()
+	{
+		$r = new \Framework\Router('/admin/stuff');
+		
+		$this->assertEquals('Admin\Stuff', $r->getControllerName());
+		$this->assertEquals('index', $r->getActionName());
+	}
+	
+	public function testParsesAdminSubsectionWithAction()
+	{
+		$r = new \Framework\Router('/admin/stuff/yeah');
+		
+		$this->assertEquals('Admin\Stuff', $r->getControllerName());
+		$this->assertEquals('yeah', $r->getActionName());
+	}
 }

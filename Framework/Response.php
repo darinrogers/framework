@@ -74,7 +74,7 @@ class Response implements \ArrayAccess
         
             $viewFileName = APP_DIR . '/views/' . $this->_controllerName . '/' .
                     $this->_actionName . '.php';
-        
+        	
             if (!file_exists($viewFileName)) {
                 die('View file missing: ' . $viewFileName);
             }
@@ -239,5 +239,11 @@ class Response implements \ArrayAccess
     public function offsetUnset($offset)
     {
         unset($this->_variables[$offset]);
+    }
+    
+    public function redirect($url)
+    {
+    	header('Location: ' . $url);
+    	exit;
     }
 }
