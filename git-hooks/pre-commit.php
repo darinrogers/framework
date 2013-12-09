@@ -1,6 +1,8 @@
 #! /usr/local/bin/php
 <?php
 
+echo "\nRunning unit tests...\n";
+
 $output = array();
 $returnValue;
 exec('phpunit /var/www/html/framework2/test', $output, $returnValue);
