@@ -21,7 +21,7 @@ class ControllerTest extends PHPUnit_Framework_TestCase
 		$c->runAction('some');
 		
 		$this->assertEquals(
-			'layout : some-viewxyz', 
+			'layout : some-view', 
 			$c->getResponse()->__toString()
 		);
 	}

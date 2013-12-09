@@ -199,9 +199,9 @@ abstract class MongoMapper
      * 
      * @return multitype:NULL 
      */
-    public function readAll()
+    public function readAll(array $criteria = array())
     {
-        $allData = $this->getCollection()->find();
+        $allData = $this->getCollection()->find($criteria);
         $allObjects = array();
         
         foreach ($allData as $datum) {
