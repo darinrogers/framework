@@ -52,7 +52,7 @@ abstract class Controller
      */
     private function _startSession()
     {
-        if (session_id() === '') {
+        if (session_id() === '' && php_sapi_name() !== 'cli') {
             session_start();
         }
     }
@@ -205,6 +205,10 @@ abstract class Controller
                 $this->getCalledControllerName(), 
                 $this->_calledAction
             );
+            
+            if (php_sapi_name() === 'cli') {
+            	$this->_response->setSendHeaders(false);
+            }
         }
         
         return $this->_response;
@@ -217,9 +221,13 @@ abstract class Controller
      * 
      * @return null
      */
-    public function runAction($actionName)
+    public function runAction($actionName, $get = null)
     {
-        $this->_calledAction = $actionName;
+        if ($get !== null) {
+        	$_GET = $get;
+        }
+    	
+    	$this->_calledAction = $actionName;
         
         $this->onBeforeDispatch();
         

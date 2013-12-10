@@ -44,6 +44,7 @@ class Response implements \ArrayAccess
     private $_isViewEnabled = true;
     private $_isLayoutEnabled = true;
     private $_headers = array();
+    private $_sendHeaders = true;
     
     /**
      * Gets all the variables set
@@ -157,8 +158,10 @@ class Response implements \ArrayAccess
      */
     public function __toString()
     {
-        foreach ($this->_headers as $header) {
-            header($header);
+        if ($this->_sendHeaders) {
+	    	foreach ($this->_headers as $header) {
+	            header($header);
+	        }
         }
         
         return $this->getResponseAsString();
@@ -245,5 +248,10 @@ class Response implements \ArrayAccess
     {
     	header('Location: ' . $url);
     	exit;
+    }
+    
+    public function setSendHeaders($sendHeaders)
+    {
+    	$this->_sendHeaders = $sendHeaders;
     }
 }
