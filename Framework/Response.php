@@ -45,6 +45,7 @@ class Response implements \ArrayAccess
     private $_isLayoutEnabled = true;
     private $_headers = array();
     private $_sendHeaders = true;
+    private $_statusCode = 200;
     
     /**
      * Gets all the variables set
@@ -148,7 +149,12 @@ class Response implements \ArrayAccess
      */
     public function setStatusCode($code)
     {
-        header('Status: ' . $code, true, $code);
+        $this->_statusCode = $code;
+    }
+    
+    public function getStatusCode()
+    {
+    	return $this->_statusCode;
     }
     
     /**
@@ -159,8 +165,13 @@ class Response implements \ArrayAccess
     public function __toString()
     {
         if ($this->_sendHeaders) {
-	    	foreach ($this->_headers as $header) {
+	    	
+        	foreach ($this->_headers as $header) {
 	            header($header);
+	        }
+	        
+	        if ($this->_statusCode != 200) {
+	        	header('Status: ' . $this->_statusCode, true, $this->_statusCode);
 	        }
         }
         

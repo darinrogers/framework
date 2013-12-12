@@ -30,6 +30,8 @@ abstract class MongoMapper
 {
     const UPSERT = true;
     
+    const ERROR_DUPLICATE_KEY = 11000;
+    
     private $_collection = null;
     private $_database = null;
     
@@ -52,10 +54,10 @@ abstract class MongoMapper
             
             return $this->_collection;
         
-        } catch (\Exception $e) {
+        } catch (DbConnectionException $e) {
             
             throw new DbConnectionException(
-                'Couldn\'t select the database collection.', 
+                'Couldn\'t connect to the database', 
                 $e->getCode(), 
                 $e
             );

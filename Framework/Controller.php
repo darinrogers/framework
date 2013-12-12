@@ -52,8 +52,18 @@ abstract class Controller
      */
     private function _startSession()
     {
-        if (session_id() === '' && php_sapi_name() !== 'cli') {
-            session_start();
+        if (session_id() === '') {
+        	
+        	if (php_sapi_name() !== 'cli') {
+
+        		session_start();
+        	
+        	} else {
+        		
+        		// if we're on the command line (i.e. unit tests), create global
+        		global $_SESSION;
+        		$_SESSION = array();
+        	}
         }
     }
     

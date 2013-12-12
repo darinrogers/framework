@@ -22,7 +22,7 @@ namespace Framework\Mappers;
  * @license  http://opensource.org/licenses/bsd-license.php New BSD License
  * @link     https://github.com/darinrogers/framework
  */
-class DbConnectionException extends \Exception
+class DbConnectionException extends MapperException
 {
     
 }

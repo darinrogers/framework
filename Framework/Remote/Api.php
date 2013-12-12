@@ -7,6 +7,7 @@ abstract class Api
 	private static $_curlMulti = null;
 	private static $_queuedHandles = array();
 	private static $_sharedCurl = null;
+	private $_lastResponseCode = null;
 	
 	private static function _getCurlMulti()
 	{
@@ -48,10 +49,7 @@ abstract class Api
 		}
 		
 		$responseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-		if ($responseCode != 200) {
-			
-			throw new CurlException('Bad response code: ' . $responseCode);
-		}
+		$this->_lastResponseCode = $responseCode;
 		
 		// not calling curl_close so we can reuse the handle
 		
@@ -78,6 +76,11 @@ abstract class Api
 	protected function getHandleContent($handleId)
 	{
 		return curl_multi_getcontent(self::$_queuedHandles[$handleId]);
+	}
+	
+	public function getLastResponseCode()
+	{
+		return $this->_lastResponseCode;
 	}
 	
 	public static function runQueue()
@@ -109,5 +112,16 @@ abstract class Api
 		
 		curl_multi_close($multiHandle);
 		self::$_curlMulti = null;
+	}
+	
+	public function post($url, array $parameters)
+	{
+		return $this->curl(
+			$url, 
+			array(
+				CURLOPT_POST => count($parameters), 
+				CURLOPT_POSTFIELDS => http_build_query($parameters)
+			)
+		);
 	}
 }
