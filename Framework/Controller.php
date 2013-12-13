@@ -61,8 +61,11 @@ abstract class Controller
         	} else {
         		
         		// if we're on the command line (i.e. unit tests), create global
-        		global $_SESSION;
-        		$_SESSION = array();
+        		if (!isset($_SESSION)) {
+        			
+        			global $_SESSION;
+        			$_SESSION = array();
+        		}
         	}
         }
     }
