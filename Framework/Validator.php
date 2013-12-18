@@ -14,4 +14,13 @@ class Validator
 	
 		return true;
 	}
+	
+	public function isValidNumberBetween($number, $min, $max)
+	{
+		if ($number < $min || $number > $max) {
+			return false;
+		}
+		
+		return true;
+	}
 }
