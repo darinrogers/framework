@@ -200,43 +200,6 @@ class Config implements \ArrayAccess
      */
     public function get($parameter)
     {
-        $parameter = $this[$parameter];
-        
-        if ($parameter == 'true') {
-        	
-        	$parameter = true;
-        
-        } elseif ($parameter == 'false') {
-        	
-        	$parameter = false;
-        }
-    	
-    	return $parameter;
-    }
-    
-    public function getAllByPrefix($prefix)
-    {
-    	$params = array();
-    	$prefix = $prefix . '.';
-    	
-    	foreach ($this->_config as $param => $value) {
-    		if (strpos($param, $prefix) === 0) {
-    			$params[str_replace($prefix, '', $param)] = $value;
-    		}
-    	}
-    	
-    	foreach ($params as $param => $value) {
-    		
-    		if ($value == 'true') {
-    			
-    			$params[$param] = true;
-    		
-    		} elseif ($value == 'false') {
-    			
-    			$params[$param] = false;
-    		}
-    	}
-    	
-    	return $params;
+        return $this[$parameter];
     }
 }
