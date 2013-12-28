@@ -4,10 +4,13 @@ namespace Framework;
 
 class Random
 {
+	const UPPER_CASE_ALPHA_NUMERIC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+	const ALL_CHARACTERS = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ `~!@#$%^&*()_+-=[]{}|;\':",./<>?';
+	
 	public function getString($length, $characters = null)
 	{
 		if ($characters === null) {
-			$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ `~!@#$%^&*()_+-=[]{}|;\':",./<>?';
+			$characters = self::ALL_CHARACTERS;
 		}
 		
 		$charactersLength = strlen($characters);

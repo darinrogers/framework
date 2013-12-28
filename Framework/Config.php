@@ -202,4 +202,18 @@ class Config implements \ArrayAccess
     {
         return $this[$parameter];
     }
+    
+    public function getAllByPrefix($prefix)
+    {
+    	$params = array();
+    	$prefix = $prefix . '.';
+    	
+    	foreach ($this->_config as $param => $value) {
+    		if (strpos($param, $prefix) === 0) {
+    			$params[str_replace($prefix, '', $param)] = $value;
+    		}
+    	}
+    	
+    	return $params;
+    }
 }
