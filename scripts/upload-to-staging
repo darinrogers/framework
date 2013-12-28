@@ -1,4 +1,4 @@
-server=107.22.49.164
+server=23.23.144.16
 cd /var/www/html/framework2
 rm -rf /tmp/framework2
 git archive --prefix framework2/ HEAD | tar -x -C /tmp

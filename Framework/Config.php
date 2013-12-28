@@ -225,6 +225,18 @@ class Config implements \ArrayAccess
     		}
     	}
     	
+    	foreach ($params as $param => $value) {
+    		
+    		if ($value == 'true') {
+    			
+    			$params[$param] = true;
+    		
+    		} elseif ($value == 'false') {
+    			
+    			$params[$param] = false;
+    		}
+    	}
+    	
     	return $params;
     }
 }
