@@ -200,7 +200,18 @@ class Config implements \ArrayAccess
      */
     public function get($parameter)
     {
-        return $this[$parameter];
+        $parameter = $this[$parameter];
+        
+        if ($parameter == 'true') {
+        	
+        	$parameter = true;
+        
+        } elseif ($parameter == 'false') {
+        	
+        	$parameter = false;
+        }
+    	
+    	return $parameter;
     }
     
     public function getAllByPrefix($prefix)
