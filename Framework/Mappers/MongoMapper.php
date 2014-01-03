@@ -128,6 +128,11 @@ abstract class MongoMapper
      */
     abstract protected function getInstance(array $dataset);
     
+    protected function convertToMongoId($id)
+    {
+    	return new \MongoId($id);
+    }
+    
     /**
      * Creates
      * 
@@ -193,7 +198,13 @@ abstract class MongoMapper
      */
     public function readOne(array $criteria)
     {
-        return $this->getCollection()->findOne($criteria);
+        $dataset = $this->getCollection()->findOne($criteria);
+        
+        if ($dataset != null) {
+        	return $this->getInstance($dataset);
+        }
+        
+        return null;
     }
     
     /**
@@ -232,9 +243,15 @@ abstract class MongoMapper
         $deltaData = $model->getDeltaDataset();
         $data = $model->getDataset();
         
+        $id = (isset($data['_id'])) ? $this->convertToMongoId($data['_id']) : null;
+        
+        if (isset($deltaData['_id'])) {
+        	unset($deltaData['_id']);
+        }
+        
         $this->getCollection()->update(
-            array('_id' => $data['_id']), 
-            $deltaData, 
+            array('_id' => $id), 
+            array('$set' => $deltaData), 
             $options
         );
     }

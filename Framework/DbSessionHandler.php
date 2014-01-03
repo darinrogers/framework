@@ -40,7 +40,7 @@ class DbSessionHandler
         $sessionMapper = new \Mappers\SessionMapper();
         $session = $sessionMapper->findById($sessionId);
         
-        return $session->getData();
+        return ($session) ? $session->getData() : array();
     }
 
     /**
@@ -53,8 +53,8 @@ class DbSessionHandler
      */
     public static function write($sessionId, $sessionData)
     {
-        $session = new \Models\Session();
-        $session->setId($sessionId);
+    	$session = new \Models\Session();
+    	$session->setId($sessionId);
         $session->setData($sessionData);
          
         $sessionMapper = new \Mappers\SessionMapper();
