@@ -113,3 +113,12 @@ function asyncJs($absolutePath)
         's.parentNode.insertBefore(node, s);' . 
         '</script>';
 }
+
+function partial($partialName, array $parameters = array())
+{
+	foreach ($parameters as $name => $value) {
+		$$name = $value;
+	}
+	
+	include APP_DIR . '/view-partials/' . $partialName;
+}
