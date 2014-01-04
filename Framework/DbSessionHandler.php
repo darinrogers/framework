@@ -37,9 +37,10 @@ class DbSessionHandler
      */
     public static function read($sessionId)
     {
-        $sessionMapper = new \Mappers\SessionMapper();
+        error_log("reading session $sessionId");
+    	$sessionMapper = new \Mappers\SessionMapper();
         $session = $sessionMapper->findById($sessionId);
-        
+        error_log("session is a " . gettype($session));
         return ($session) ? $session->getData() : array();
     }
 
@@ -53,6 +54,7 @@ class DbSessionHandler
      */
     public static function write($sessionId, $sessionData)
     {
+    	error_log("writing " . count($sessionData) . " parameters to $sessionId");
     	$session = new \Models\Session();
     	$session->setId($sessionId);
         $session->setData($sessionData);
