@@ -59,4 +59,14 @@ class RouterTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals('Admin\Stuff', $r->getControllerName());
 		$this->assertEquals('yeah', $r->getActionName());
 	}
+	
+	public function testAddsColonDelimitedPartsToGET()
+	{
+		$r = new \Framework\Router('/beta-code/code:123/email:yeah%40no.com');
+		
+		$this->assertEquals('BetaCode', $r->getControllerName());
+		$this->assertEquals('index', $r->getActionName());
+		$this->assertEquals('123', $_GET['code']);
+		$this->assertEquals('yeah@no.com', $_GET['email']);
+	}
 }

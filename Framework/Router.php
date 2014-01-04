@@ -52,6 +52,19 @@ class Router
     	
     	$requestParts = explode('/', substr($requestUri, 1));
     	
+    	// pull querystring parameters
+    	$name = '';
+    	$value = '';
+    	foreach ($requestParts as $i => $requestPart) {
+    		
+    		if (strpos($requestPart, ':') !== false) {
+    			
+    			list($name, $value) = explode(':', $requestPart);
+    			$_GET[$name] = urldecode($value);
+    			unset($requestParts[$i]);
+    		}
+    	}
+    	
     	$isAdmin = false;
     	
     	if ($requestParts[0] == 'admin') {
