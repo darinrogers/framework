@@ -54,8 +54,8 @@ class DbSessionHandler
      */
     public static function write($sessionId, $sessionData)
     {
-    	error_log("writing " . count($sessionData) . " parameters to $sessionId");
-    	error_log("    " . http_build_query($sessionData));
+    	error_log("writing  to $sessionId");
+    	error_log("    $sessionData");
     	$session = new \Models\Session();
     	$session->setId($sessionId);
         $session->setData($sessionData);
