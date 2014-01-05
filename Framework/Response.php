@@ -46,6 +46,7 @@ class Response implements \ArrayAccess
     private $_headers = array();
     private $_sendHeaders = true;
     private $_statusCode = 200;
+    private $_viewName = '';
     
     /**
      * Gets all the variables set
@@ -74,8 +75,11 @@ class Response implements \ArrayAccess
         
         if ($this->_isViewEnabled) {
         
-            $viewFileName = APP_DIR . '/views/' . $this->_controllerName . '/' .
-                    $this->_actionName . '.php';
+            // use either specified view or default
+        	$viewToUse = ($this->_viewName != '') ? $this->_viewName : $this->_actionName;
+        	
+        	$viewFileName = APP_DIR . '/views/' . $this->_controllerName . '/' .
+                    $viewToUse . '.php';
         	
             if (!file_exists($viewFileName)) {
                 die('View file missing: ' . $viewFileName);
@@ -87,7 +91,7 @@ class Response implements \ArrayAccess
             ob_clean();
         
             $scriptFileName = APP_DIR . '/views/' . $this->_controllerName . '/' .
-                    $this->_actionName . '.script.php';
+                    $viewToUse . '.script.php';
             $scriptContent = '';
         
             if (file_exists($scriptFileName)) {
@@ -155,6 +159,11 @@ class Response implements \ArrayAccess
     public function getStatusCode()
     {
     	return $this->_statusCode;
+    }
+    
+    public function setViewName($viewName)
+    {
+    	$this->_viewName = $viewName;
     }
     
     /**

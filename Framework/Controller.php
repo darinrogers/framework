@@ -30,6 +30,7 @@ abstract class Controller
      */
     private $_response = null;
     private $_post = null;
+    private $_viewName = '';
     
     /**
      * Lazily loads the POST parameters, defaulting to $_POST
@@ -182,6 +183,11 @@ abstract class Controller
         \Framework\Layout::getInstance()->setName($layoutName);
     }
     
+    protected function setViewName($viewName)
+    {
+    	$this->_viewName = $viewName;
+    }
+    
     /**
      * Gets the response class name, defaulting to Reponse
      * 
@@ -218,6 +224,11 @@ abstract class Controller
                 $this->getCalledControllerName(), 
                 $this->_calledAction
             );
+            
+            // if we're not using the default view
+            if ($this->_viewName != '') {
+            	$this->_response->setViewName($this->_viewName);
+            }
             
             if (php_sapi_name() === 'cli') {
             	$this->_response->setSendHeaders(false);
