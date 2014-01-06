@@ -33,4 +33,8 @@ class Time
      * @var number
      */
     const ONE_HOUR = 3600;
+    /**
+     * @var number
+     */
+    const ONE_DAY = 86400;
 }
