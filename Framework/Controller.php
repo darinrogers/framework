@@ -135,6 +135,11 @@ abstract class Controller
         // no op
     }
     
+    protected function onCreatedCsrfToken($csrfToken)
+    {
+    	// no op
+    }
+    
     /**
      * Gets a CSRF token. Starts a session if one isn't already started. 
      * 
@@ -146,6 +151,8 @@ abstract class Controller
         
             $csrfToken = new \Framework\CsrfToken();
             $_SESSION['csrfToken'] = (string)$csrfToken;
+            
+            $this->onCreatedCsrfToken((string)$csrfToken);
         }
         
         return $_SESSION['csrfToken'];

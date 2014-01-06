@@ -40,7 +40,7 @@ class CsrfToken
      */
     public function __construct()
     {
-        $this->_string = md5(microtime());
+        $this->_string = hash('sha256', mt_rand());
     }
     
     /**
