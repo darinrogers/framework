@@ -186,6 +186,10 @@ abstract class Controller
     protected function setViewName($viewName)
     {
     	$this->_viewName = $viewName;
+    	
+    	if ($this->_response !== null) {
+    		$this->_response->setViewName($viewName);
+    	}
     }
     
     /**

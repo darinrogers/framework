@@ -81,11 +81,11 @@ class Response implements \ArrayAccess
         	$viewFileName = APP_DIR . '/views/' . $this->_controllerName . '/' .
                     $viewToUse . '.php';
         	
-            if (!file_exists($viewFileName)) {
+            if (!file_exists(realpath($viewFileName))) {
                 die('View file missing: ' . $viewFileName);
             }
         
-            include $viewFileName;
+            include realpath($viewFileName);
         
             $viewContent = ob_get_contents();
             ob_clean();
