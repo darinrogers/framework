@@ -33,6 +33,10 @@ class Cookie
      * @var string
      */
     private $_name = '';
+    /**
+     * @var string
+     */
+    private $_path = '/';
     
     /**
      * Constructor
@@ -77,7 +81,7 @@ class Cookie
      */
     public function setValue($value)
     {
-        if (!setcookie($this->_name, $value, time() + Time::ONE_YEAR)) {
+        if (!setcookie($this->_name, $value, time() + Time::ONE_YEAR, $this->_path)) {
         
             throw new Exception(
                 'Failed to set cookie named: ' . $this->_name,
@@ -85,5 +89,15 @@ class Cookie
                 'Do you have them disabled?'
             );
         }
+    }
+    
+    /**
+     * Deletes a cookie
+     * 
+     *  @return null
+     */
+    public function delete()
+    {
+    	setcookie($this->_name, '', time() - Time::ONE_HOUR, $this->_path);
     }
 }

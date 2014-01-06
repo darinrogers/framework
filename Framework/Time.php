@@ -29,4 +29,8 @@ class Time
      * @var number
      */
     const ONE_YEAR = 31536000;
+    /**
+     * @var number
+     */
+    const ONE_HOUR = 3600;
 }
