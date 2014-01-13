@@ -89,6 +89,8 @@ class Cookie
                 'Do you have them disabled?'
             );
         }
+        
+        $_COOKIE[$this->_name] = $value;
     }
     
     /**
