@@ -5,6 +5,7 @@ namespace Framework;
 class Random
 {
 	const UPPER_CASE_ALPHA_NUMERIC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+	const LOWER_CASE_ALPHA_NUMERIC = 'abcdefghijklmnopqrstuvwxyz0123456789';
 	const ALL_CHARACTERS = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ `~!@#$%^&*()_+-=[]{}|;\':",./<>?';
 	
 	public function getString($length, $characters = null)
