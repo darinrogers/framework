@@ -85,33 +85,34 @@ abstract class Api
 	
 	public static function runQueue()
 	{
-		$active = null;
+		$running = null;
 		$multiHandle = self::_getCurlMulti();
-		error_log('got handle');
+		
 		do {
-			error_log('curl_multi_exec');
-			$multiExecResult = curl_multi_exec($multiHandle, $active);
+			
+			$multiExecResult = curl_multi_exec($multiHandle, $running);
 		
 		} while ($multiExecResult === CURLM_CALL_MULTI_PERFORM);
 		
-		while ($active && $multiExecResult === CURLM_OK) {
-			error_log('curl_multi_select');
-			if (curl_multi_select($multiHandle) != -1) {
-				
-				do {
-					error_log(' curl_mulit_exec');
-					$multiExecResult = curl_multi_exec($multiHandle, $active);
-				
-				} while ($multiExecResult === CURLM_CALL_MULTI_PERFORM);
+		while ($running && $multiExecResult === CURLM_OK) {
+			
+			if (curl_multi_select($multiHandle) == -1) {
+				usleep(100);
 			}
+			
+			do {
+				
+				$multiExecResult = curl_multi_exec($multiHandle, $running);
+			
+			} while ($multiExecResult === CURLM_CALL_MULTI_PERFORM);
 		}
 		
-		/*foreach (self::$_queuedHandles as $queuedHandle) {
+		foreach (self::$_queuedHandles as $queuedHandle) {
 			curl_multi_remove_handle($multiHandle, $queuedHandle);
 		}
 		
 		curl_multi_close($multiHandle);
-		self::$_curlMulti = null;*/
+		self::$_curlMulti = null;
 	}
 	
 	public function post($url, array $parameters)
