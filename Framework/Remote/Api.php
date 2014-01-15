@@ -87,19 +87,19 @@ abstract class Api
 	{
 		$active = null;
 		$multiHandle = self::_getCurlMulti();
-		
+		error_log('got handle');
 		do {
-			
+			error_log('curl_multi_exec');
 			$multiExecResult = curl_multi_exec($multiHandle, $active);
 		
 		} while ($multiExecResult === CURLM_CALL_MULTI_PERFORM);
 		
 		while ($active && $multiExecResult === CURLM_OK) {
-			
+			error_log('curl_multi_select');
 			if (curl_multi_select($multiHandle) != -1) {
 				
 				do {
-					
+					error_log(' curl_mulit_exec');
 					$multiExecResult = curl_multi_exec($multiHandle, $active);
 				
 				} while ($multiExecResult === CURLM_CALL_MULTI_PERFORM);
