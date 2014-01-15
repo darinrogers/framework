@@ -106,12 +106,12 @@ abstract class Api
 			}
 		}
 		
-		foreach (self::$_queuedHandles as $queuedHandle) {
+		/*foreach (self::$_queuedHandles as $queuedHandle) {
 			curl_multi_remove_handle($multiHandle, $queuedHandle);
 		}
 		
 		curl_multi_close($multiHandle);
-		self::$_curlMulti = null;
+		self::$_curlMulti = null;*/
 	}
 	
 	public function post($url, array $parameters)
