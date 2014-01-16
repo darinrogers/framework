@@ -184,9 +184,15 @@ abstract class MongoMapper
      * 
      * @return null
      */
-    public function delete(\Models\Model $model)
+    public function delete(\Framework\Models\Model $model)
     {
-        
+    	$data = $model->getDataset();
+    	
+    	$id = (isset($data['_id'])) ? $this->convertToMongoId($data['_id']) : null;
+    	
+    	$this->getCollection()->remove(
+    		array('_id' => $id)
+    	);
     }
     
     /**
