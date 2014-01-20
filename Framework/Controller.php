@@ -249,6 +249,11 @@ abstract class Controller
         return $this->_response;
     }
     
+    public function hasAction($actionName)
+    {
+    	return method_exists($this, $actionName . 'Action');
+    }
+    
     /**
      * Runs the controller action
      * 
