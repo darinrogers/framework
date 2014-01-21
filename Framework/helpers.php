@@ -45,6 +45,11 @@ function metaTag($name, $content)
     \Framework\Layout::getInstance()->addMetaTag($name, $content);
 }
 
+function styleSheet($href)
+{
+	\Framework\Layout::getInstance()->addStyleSheet($href);
+}
+
 /**
  * Echoes meta tags added with metaTag()
  * 
@@ -57,6 +62,15 @@ function metaTags()
     foreach ($metaTags as $metaTag) {
         echo '<meta name="' . $metaTag[0] . '" content="' . $metaTag[1] . '">';
     }
+}
+
+function styleSheets()
+{
+	$styleSheets = \Framework\Layout::getInstance()->getStyleSheets();
+	
+	foreach ($styleSheets as $styleSheet) {
+		echo '<link type="text/css" rel="stylesheet" href="' . $styleSheet . '">';
+	}
 }
 
 /**

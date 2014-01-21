@@ -43,6 +43,8 @@ class Layout
     
     private $_name = 'default';
     
+    private $_styleSheets = array();
+    
     /**
      * Constructor
      * 
@@ -64,6 +66,11 @@ class Layout
     public function addMetaTag($name, $content)
     {
         $this->_metaTags[] = array($name, $content);
+    }
+    
+    public function addStyleSheet($href)
+    {
+    	$this->_styleSheets[] = $href;
     }
     
     /**
@@ -102,6 +109,11 @@ class Layout
     public function getMetaTags()
     {
         return $this->_metaTags;
+    }
+    
+    public function getStyleSheets()
+    {
+    	return $this->_styleSheets;
     }
     
     /**
