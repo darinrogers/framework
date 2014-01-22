@@ -19,7 +19,7 @@ class SessionMapper extends \Framework\Mappers\MongoMapper
 		return 'framework-test';
 	}
 	
-	protected function getHostName()
+	protected function getHostNames()
 	{
 		return 'localhost';
 	}

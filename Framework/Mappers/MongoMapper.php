@@ -34,6 +34,7 @@ abstract class MongoMapper
     
     private $_collection = null;
     private $_database = null;
+    private $_client = null;
     
     /**
      * Gets the collection. 
@@ -64,14 +65,38 @@ abstract class MongoMapper
         }
     }
     
+    protected function getConnectionString()
+    {
+    	$string = 'mongodb://' . $this->getHostNames();
+    	
+    	if ($this->getReplicaSetName() != '') {
+    		$string .= '?replicaSet=' . $this->getReplicaSetName();
+    	}
+    	
+    	return $string;
+    }
+    
+    protected function getReplicaSetName()
+    {
+    	return '';
+    }
+    
+    protected function getClient()
+    {
+    	if ($this->_client == null) {
+    		$this->_client = new \MongoClient($this->getConnectionString());
+    	}
+    	
+    	return $this->_client;
+    }
+    
     protected function getDb()
     {
     	if ($this->_database == null) {
     		
     		try {
     		
-    			$client = new \MongoClient('mongodb://' . $this->getHostname() . ':27017');
-    			$this->_database = $client->selectDB($this->getDbName());
+    			$this->_database = $this->getClient()->selectDB($this->getDbName());
     			
     		} catch (\MongoConnectionException $e) {
     			
@@ -117,7 +142,7 @@ abstract class MongoMapper
      * 
      * @return string
      */
-    abstract protected function getHostName();
+    abstract protected function getHostNames();
     
     /**
      * Returns an instance of the Model for this mapper
