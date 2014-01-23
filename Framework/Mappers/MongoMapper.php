@@ -84,7 +84,10 @@ abstract class MongoMapper
     protected function getClient()
     {
     	if ($this->_client == null) {
-    		$this->_client = new \MongoClient($this->getConnectionString());
+    		$this->_client = new \MongoClient(
+    			$this->getConnectionString(), 
+    			array('connectTimeoutMS' => 1000)
+			);
     	}
     	
     	return $this->_client;
