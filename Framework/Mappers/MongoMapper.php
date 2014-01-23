@@ -69,10 +69,6 @@ abstract class MongoMapper
     {
     	$string = 'mongodb://' . $this->getHostNames();
     	
-    	if ($this->getReplicaSetName() != '') {
-    		$string .= '/?replicaSet=' . $this->getReplicaSetName();
-    	}
-    	
     	return $string;
     }
     
@@ -84,7 +80,18 @@ abstract class MongoMapper
     protected function getClient()
     {
     	if ($this->_client == null) {
-    		$this->_client = new \MongoClient($this->getConnectionString());
+    		
+    		if ($this->getReplicaSetName() == '') {
+    			
+    			$this->_client = new \MongoClient($this->getConnectionString());
+    		
+    		} else {
+    			
+    			$this->_client = new \MongoClient(
+    				$this->getConnectionString(), 
+    				array('replicaSet' => $this->getReplicaSetName())
+    			);
+    		}
     	}
     	
     	return $this->_client;
