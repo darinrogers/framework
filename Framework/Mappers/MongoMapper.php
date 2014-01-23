@@ -86,7 +86,7 @@ abstract class MongoMapper
     	if ($this->_client == null) {
     		$this->_client = new \MongoClient(
     			$this->getConnectionString(), 
-    			array('connectTimeoutMS' => 500) // so it won't hang for one minute if a secondary is down
+    			array('connectTimeoutMS' => 1000) // so it won't hang for one minute if a secondary is down
 			);
     	}
     	
