@@ -70,7 +70,7 @@ abstract class MongoMapper
     	$string = 'mongodb://' . $this->getHostNames();
     	
     	if ($this->getReplicaSetName() != '') {
-    		$string .= '?replicaSet=' . $this->getReplicaSetName();
+    		$string .= '/?replicaSet=' . $this->getReplicaSetName();
     	}
     	
     	return $string;
